@@ -30,7 +30,6 @@
       ]
     },
     "plugins": [
-      "@react-native-firebase/app",
       [
         "expo-location",
         {

@@ -7,14 +7,14 @@ import AppNavigator from './mobile/src/navigation/AppNavigator';
 import { colors } from './mobile/src/utils/theme';
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     Oswald: Oswald_400Regular,
     Oswald_500Medium,
     Inter: Inter_400Regular,
     Inter_600SemiBold,
   });
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded && !fontError) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.dark }}>
         <ActivityIndicator color={colors.green} size="large" />
