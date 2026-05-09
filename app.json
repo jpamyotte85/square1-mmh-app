@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#1C1C1C"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.square1mmh.app"
@@ -21,7 +23,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1C1C1C"
       },
-      "package": "com.square1mmh.app"
+      "package": "com.square1mmh.app",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "plugins": [
       "@react-native-firebase/app",
@@ -34,8 +40,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": ""
+        "projectId": "6f8821c9-160e-41dc-848c-ed048b600b96"
       }
-    }
+    },
+    "owner": "jpamyotte85"
   }
 }
