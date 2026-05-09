@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Square 1 MMH",
+    "slug": "square1-mmh-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1C1C1C"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.square1mmh.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1C1C1C"
+      },
+      "package": "com.square1mmh.app"
+    },
+    "plugins": [
+      "@react-native-firebase/app",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Square 1 uses your location to find nearby mental health resources and AA/NA groups."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
+    }
+  }
+}

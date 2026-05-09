@@ -1,36 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View, Text, FlatList, TextInput, TouchableOpacity,
   StyleSheet, KeyboardAvoidingView, Platform,
 } from 'react-native';
-import database from '@react-native-firebase/database';
-import auth from '@react-native-firebase/auth';
 import { colors, fonts, spacing, radius } from '../utils/theme';
 
-export default function MessageBoardScreen() {
-  const [posts, setPosts] = useState([]);
-  const [newPost, setNewPost] = useState('');
-  const user = auth().currentUser;
+const MOCK_POSTS = [
+  { id: '1', author: 'James', text: "First time posting here. Really glad this community exists. Going through a tough stretch but knowing I'm not alone helps.", createdAt: Date.now() - 3600000 },
+  { id: '2', author: 'Marcus', text: "Went to my first AA meeting last week. Nervous walking in, but the guys there were solid. Anyone else been going?", createdAt: Date.now() - 7200000 },
+  { id: '3', author: 'Derek', text: "Square 1 helped me find a therapist through the directory. Three sessions in and already feeling different.", createdAt: Date.now() - 86400000 },
+];
 
-  useEffect(() => {
-    const ref = database().ref('/board/posts');
-    const handler = ref.orderByChild('createdAt').on('value', (snapshot) => {
-      const data = snapshot.val() || {};
-      const list = Object.entries(data)
-        .map(([id, post]) => ({ id, ...post }))
-        .sort((a, b) => b.createdAt - a.createdAt);
-      setPosts(list);
-    });
-    return () => ref.off('value', handler);
-  }, []);
+export default function MessageBoardScreen() {
+  const [posts, setPosts] = useState(MOCK_POSTS);
+  const [newPost, setNewPost] = useState('');
 
   function submitPost() {
     if (!newPost.trim()) return;
-    database().ref('/board/posts').push({
-      text: newPost.trim(),
-      author: user?.displayName || 'Anonymous',
-      createdAt: Date.now(),
-    });
+    setPosts([
+      { id: Date.now().toString(), author: 'You', text: newPost.trim(), createdAt: Date.now() },
+      ...posts,
+    ]);
     setNewPost('');
   }
 
@@ -100,19 +90,12 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     marginBottom: spacing.sm,
     elevation: 1,
-    shadowColor: colors.black,
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    shadowOffset: { width: 0, height: 1 },
   },
   postHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.sm },
   avatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 36, height: 36, borderRadius: 18,
     backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'center', justifyContent: 'center',
     marginRight: spacing.sm,
   },
   avatarText: { fontFamily: fonts.heading, fontSize: 16, color: colors.white },
@@ -121,29 +104,20 @@ const styles = StyleSheet.create({
   text: { fontFamily: fonts.body, fontSize: 15, color: colors.charcoal, lineHeight: 22 },
   empty: { textAlign: 'center', marginTop: 40, color: colors.lightGray, fontFamily: fonts.body, fontStyle: 'italic' },
   inputRow: {
-    flexDirection: 'row',
-    padding: spacing.sm,
+    flexDirection: 'row', padding: spacing.sm,
     backgroundColor: colors.white,
-    borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopWidth: 1, borderTopColor: '#eee',
     alignItems: 'flex-end',
   },
   input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: colors.lightGray,
-    borderRadius: radius.md,
-    padding: spacing.sm,
-    fontFamily: fonts.body,
-    fontSize: 14,
-    color: colors.charcoal,
-    maxHeight: 100,
-    marginRight: spacing.sm,
+    flex: 1, borderWidth: 1, borderColor: colors.lightGray,
+    borderRadius: radius.md, padding: spacing.sm,
+    fontFamily: fonts.body, fontSize: 14, color: colors.charcoal,
+    maxHeight: 100, marginRight: spacing.sm,
   },
   sendBtn: {
     backgroundColor: colors.primary,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md, paddingVertical: spacing.sm,
     borderRadius: radius.md,
   },
   sendText: { fontFamily: fonts.heading, color: colors.white, fontSize: 13, letterSpacing: 1 },

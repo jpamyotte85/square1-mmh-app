@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { colors, fonts, spacing, radius } from '../utils/theme';
-import api from '../services/api';
+
+const MOCK_EVENTS = [
+  { id: 1, title: 'Men\'s Circle — Weekly Meetup', location: 'Square 1 Downtown', date: '2026-05-14', time: '7:00 PM', description: 'Open circle for men to share, listen, and connect. No agenda, no judgment.' },
+  { id: 2, title: 'Guest Speaker: Living with Depression', location: 'Square 1 North', date: '2026-05-17', time: '6:30 PM', description: 'A candid talk from someone who\'s been through it and came out the other side.' },
+  { id: 3, title: 'BBQ & Hangout', location: 'Bowness Park, Calgary', date: '2026-05-24', time: '1:00 PM', description: 'Casual afternoon, food, games. Just brothers hanging out.' },
+  { id: 4, title: 'Grief Support Group', location: 'Square 1 South', date: '2026-06-01', time: '5:30 PM', description: 'A safe space for men dealing with loss of any kind.' },
+];
 
 export default function EventsScreen() {
-  const [events, setEvents] = useState([]);
-
-  useEffect(() => {
-    api.get('/events').then((res) => setEvents(res.data)).catch(console.error);
-  }, []);
-
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
@@ -18,7 +18,7 @@ export default function EventsScreen() {
         <Text style={styles.subheading}>Stay connected with your community</Text>
       </View>
       <FlatList
-        data={events}
+        data={MOCK_EVENTS}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ padding: spacing.md }}
         renderItem={({ item }) => (
@@ -39,7 +39,6 @@ export default function EventsScreen() {
             </View>
           </View>
         )}
-        ListEmptyComponent={<Text style={styles.empty}>No upcoming events.</Text>}
       />
     </View>
   );
@@ -57,35 +56,17 @@ const styles = StyleSheet.create({
   greenBar: { height: 3, width: 50, backgroundColor: colors.green, marginTop: spacing.xs, marginBottom: spacing.xs },
   subheading: { fontFamily: fonts.body, fontSize: 13, color: colors.lightGray },
   card: {
-    backgroundColor: colors.white,
-    borderRadius: radius.md,
-    marginBottom: spacing.sm,
-    flexDirection: 'row',
-    overflow: 'hidden',
-    elevation: 2,
-    shadowColor: colors.black,
-    shadowOpacity: 0.06,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
+    backgroundColor: colors.white, borderRadius: radius.md, marginBottom: spacing.sm,
+    flexDirection: 'row', overflow: 'hidden', elevation: 2,
   },
   dateBox: {
-    backgroundColor: colors.primary,
-    width: 68,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: spacing.sm,
+    backgroundColor: colors.primary, width: 68,
+    alignItems: 'center', justifyContent: 'center', padding: spacing.sm,
   },
   dateMonth: { fontFamily: fonts.heading, color: colors.green, fontSize: 12, letterSpacing: 1 },
   dateDay: { fontFamily: fonts.heading, color: colors.white, fontSize: 30 },
   info: { flex: 1, padding: spacing.md },
-  title: {
-    fontFamily: fonts.heading,
-    fontSize: 16,
-    color: colors.dark,
-    marginBottom: spacing.xs,
-    letterSpacing: 0.3,
-  },
+  title: { fontFamily: fonts.heading, fontSize: 16, color: colors.dark, marginBottom: spacing.xs, letterSpacing: 0.3 },
   detail: { fontFamily: fonts.body, fontSize: 13, color: colors.charcoal, marginTop: 2 },
   desc: { fontFamily: fonts.body, fontSize: 13, color: colors.lightGray, marginTop: spacing.sm },
-  empty: { textAlign: 'center', marginTop: 40, color: colors.lightGray, fontFamily: fonts.body },
 });

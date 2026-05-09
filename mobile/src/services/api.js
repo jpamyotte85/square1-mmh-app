@@ -1,18 +1,9 @@
 import axios from 'axios';
-import auth from '@react-native-firebase/auth';
 
 const api = axios.create({
-  baseURL: 'https://your-api-url.railway.app/api',
+  baseURL: 'https://api.square1mmh.com/v1',
   timeout: 10000,
-});
-
-api.interceptors.request.use(async (config) => {
-  const user = auth().currentUser;
-  if (user) {
-    const token = await user.getIdToken();
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+  headers: { 'Content-Type': 'application/json' },
 });
 
 export default api;

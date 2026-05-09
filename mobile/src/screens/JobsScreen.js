@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TextInput, Linking, TouchableOpacity } from 'react-native';
 import { colors, fonts, spacing, radius } from '../utils/theme';
-import api from '../services/api';
+
+const MOCK_JOBS = [
+  { id: 1, title: 'Peer Support Worker', company: 'Square 1 MMH', location: 'Calgary, AB', type: 'Part-Time', wage: '$22–$26/hr', description: 'Support men in recovery by sharing lived experience and guiding them through community programs.' },
+  { id: 2, title: 'General Labourer', company: 'Greystone Construction (Partner)', location: 'Calgary, AB', type: 'Full-Time', wage: '$24/hr', description: 'Immediate start. No experience required. Square 1 members get priority placement.' },
+  { id: 3, title: 'Warehouse Associate', company: 'North Star Logistics (Partner)', location: 'Balzac, AB', type: 'Full-Time', wage: '$20–$23/hr', description: 'Day shift, Mon–Fri. Supportive team environment. Criminal record considered.' },
+  { id: 4, title: 'Cook / Kitchen Staff', company: 'The Brothers Table (Partner)', location: 'Calgary, AB', type: 'Part-Time', wage: '$18–$21/hr', description: 'Social enterprise restaurant. Training provided. Flexible scheduling for program participants.' },
+];
 
 export default function JobsScreen() {
-  const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState('');
 
-  useEffect(() => {
-    api.get('/jobs').then((res) => setJobs(res.data)).catch(console.error);
-  }, []);
-
-  const filtered = jobs.filter((j) =>
+  const filtered = MOCK_JOBS.filter((j) =>
     j.title.toLowerCase().includes(search.toLowerCase()) ||
     j.company.toLowerCase().includes(search.toLowerCase())
   );
@@ -44,21 +45,13 @@ export default function JobsScreen() {
             </View>
             <Text style={styles.company}>{item.company}</Text>
             <Text style={styles.detail}>📍 {item.location}</Text>
-            {item.wage && <Text style={styles.detail}>💵 {item.wage}</Text>}
-            {item.description && (
-              <Text style={styles.desc} numberOfLines={3}>{item.description}</Text>
-            )}
-            {item.applyUrl && (
-              <TouchableOpacity
-                style={styles.applyBtn}
-                onPress={() => Linking.openURL(item.applyUrl)}
-              >
-                <Text style={styles.applyText}>APPLY NOW</Text>
-              </TouchableOpacity>
-            )}
+            <Text style={styles.detail}>💵 {item.wage}</Text>
+            <Text style={styles.desc} numberOfLines={3}>{item.description}</Text>
+            <TouchableOpacity style={styles.applyBtn}>
+              <Text style={styles.applyText}>APPLY NOW</Text>
+            </TouchableOpacity>
           </View>
         )}
-        ListEmptyComponent={<Text style={styles.empty}>No job listings available.</Text>}
       />
     </View>
   );
@@ -76,53 +69,27 @@ const styles = StyleSheet.create({
   greenBar: { height: 3, width: 50, backgroundColor: colors.green, marginTop: spacing.xs, marginBottom: spacing.xs },
   subheading: { fontFamily: fonts.body, fontSize: 13, color: colors.lightGray },
   search: {
-    backgroundColor: colors.white,
-    margin: spacing.md,
-    padding: spacing.md,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.lightGray,
-    fontFamily: fonts.body,
-    fontSize: 15,
-    color: colors.charcoal,
+    backgroundColor: colors.white, margin: spacing.md, padding: spacing.md,
+    borderRadius: radius.md, borderWidth: 1, borderColor: colors.lightGray,
+    fontFamily: fonts.body, fontSize: 15, color: colors.charcoal,
   },
   card: {
-    backgroundColor: colors.white,
-    borderRadius: radius.md,
-    padding: spacing.md,
-    marginBottom: spacing.sm,
-    elevation: 2,
-    shadowColor: colors.black,
-    shadowOpacity: 0.06,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
+    backgroundColor: colors.white, borderRadius: radius.md,
+    padding: spacing.md, marginBottom: spacing.sm, elevation: 2,
   },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
-  title: {
-    fontFamily: fonts.heading,
-    fontSize: 16,
-    color: colors.dark,
-    flex: 1,
-    letterSpacing: 0.3,
-  },
+  title: { fontFamily: fonts.heading, fontSize: 16, color: colors.dark, flex: 1, letterSpacing: 0.3 },
   typeBadge: {
-    backgroundColor: '#E8F4FF',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: radius.pill,
-    marginLeft: spacing.sm,
+    backgroundColor: '#E8F4FF', paddingHorizontal: 8, paddingVertical: 3,
+    borderRadius: radius.pill, marginLeft: spacing.sm,
   },
   typeText: { fontFamily: fonts.body, fontSize: 11, color: colors.primary, fontWeight: '600' },
   company: { fontFamily: fonts.heading, fontSize: 14, color: colors.primary, marginTop: 4, marginBottom: spacing.sm, letterSpacing: 0.3 },
   detail: { fontFamily: fonts.body, fontSize: 13, color: colors.charcoal, marginTop: 2 },
   desc: { fontFamily: fonts.body, fontSize: 13, color: colors.lightGray, marginTop: spacing.sm },
   applyBtn: {
-    marginTop: spacing.md,
-    backgroundColor: colors.primary,
-    paddingVertical: 10,
-    borderRadius: radius.md,
-    alignItems: 'center',
+    marginTop: spacing.md, backgroundColor: colors.primary,
+    paddingVertical: 10, borderRadius: radius.md, alignItems: 'center',
   },
   applyText: { fontFamily: fonts.heading, color: colors.white, fontSize: 14, letterSpacing: 1.5 },
-  empty: { textAlign: 'center', marginTop: 40, color: colors.lightGray, fontFamily: fonts.body },
 });
